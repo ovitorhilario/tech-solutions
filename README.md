@@ -1,72 +1,201 @@
-#Cadastro de Clientes - Pessoas
+# Cadastro de Pessoas API
 
-Para executar este app você deve configurar o banco de dados PostgreSQL. Este pode ser configurado localmente ou por meio de docker.
-Caso opte por docker, execute o comando:
+![Versão](https://img.shields.io/badge/version-1.0.0-blue)
+![Status do Build](https://img.shields.io/github/actions/workflow/status/tech-solutions/cadastro-pessoas/main.yml?branch=main) ![Licença](https://img.shields.io/badge/license-MIT-green)
 
-####################################################
+API REST para gerenciamento de um cadastro de clientes (Pessoas e Cidades), desenvolvida com Jakarta EE e Payara Micro.
 
-docker run -it  --rm   --name myPostgresDb    -p 5432:5432     -e POSTGRES_USER=postgres     -e POSTGRES_PASSWORD=postgres     -e POSTGRES_DB=localdb   -d  postgres
+---
 
-####################################################
+## Instruções para Versionamento da API
 
-Para executar o projeto, verifique se o arquivo mvnw é executável, caso não seja, voce deve executar primeiro `chmod +x mvnw` (linux).
+Este projeto adota o [Semantic Versioning 2.0.0](http://semver.org/). O versionamento segue o formato `X.Y.Z` (ou `MAJOR.MINOR.PATCH`), onde cada parte é incrementada de acordo com as seguintes regras:
 
+-   **MAJOR (X)**: Para mudanças incompatíveis na API (breaking changes).
+    -   Ex: Remoção de endpoints REST.
+    -   Ex: Alteração de esquema de banco de dados que quebra compatibilidade.
 
-############### No linux utilize ################
+-   **MINOR (Y)**: Para adição de novas funcionalidades de forma retrocompatível.
+    -   Ex: Adição de novos endpoints REST.
+    -   Ex: Novas funcionalidades em classes existentes sem quebrar o uso atual.
 
+-   **PATCH (Z)**: Para correções de bugs de forma retrocompatível (bug fixes).
+    -   Ex: Correções de segurança.
+    -   Ex: Correção de bugs que não alteram a assinatura de métodos da API.
+
+#### Exemplo de Versionamento para este Projeto
+```
+1.0.0 - Versão inicial com CRUD de Pessoa e Cidade
+1.1.0 - Adição de endpoints de relatórios
+1.1.1 - Correção de bug na validação de CPF
+2.0.0 - Migração para Jakarta EE 10 (breaking change)
+```
+
+---
+
+## Como Contribuir
+
+Para garantir a qualidade e a consistência do código, seguimos algumas diretrizes:
+
+1.  **Branching Model:** Utilizamos o **Git Flow**. Todo desenvolvimento de novas funcionalidades deve ser feito em um branch `feature/*` a partir do `develop`.
+2.  **Commits:** Adotamos o padrão **Conventional Commits** para mensagens de commit claras e significativas.
+3.  **Code Review:** Todo código deve ser submetido via **Pull Request** para o branch `develop` e precisa ser revisado e aprovado por pelo menos um membro da equipe antes do merge.
+
+---
+
+## Tabela de Conteúdos
+
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Instruções para Versionamento da API](#instruções-para-versionamento-da-api)
+- [Pré-requisitos](#pré-requisitos)
+- [Como Executar o Projeto (Desenvolvimento)](#como-executar-o-projeto-desenvolvimento)
+  - [1. Clone o Repositório](#1-clone-o-repositório)
+  - [2. Configure o Banco de Dados (PostgreSQL com Docker)](#2-configure-o-banco-de-dados-postgresql-com-docker)
+  - [3. Execute a Aplicação](#3-execute-a-aplicação)
+- [Executando os Testes](#executando-os-testes)
+- [Como Executar o Projeto (Produção)](#como-executar-o-projeto-produção)
+- [Como Contribuir](#como-contribuir)
+
+---
+
+## Funcionalidades
+
+-   [x] CRUD completo de Pessoas
+-   [x] CRUD completo de Cidades
+-   [ ] Geração de relatórios (em desenvolvimento)
+
+---
+
+## Tecnologias Utilizadas
+
+-   **Backend:** Java 20, Jakarta EE 10
+-   **Servidor de Aplicação:** Payara Micro
+-   **Banco de Dados:** PostgreSQL
+-   **Build e Dependências:** Apache Maven
+-   **Containerização:** Docker
+
+---
+
+## Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina:
+-   [JDK 20](https://www.oracle.com/java/technologies/downloads/) ou superior
+-   [Apache Maven](https://maven.apache.org/download.cgi)
+-   [Docker](https://www.docker.com/products/docker-desktop/)
+-   [Git](https://git-scm.com/downloads)
+
+---
+
+## Como Executar o Projeto (Desenvolvimento)
+
+### 1. Clone o Repositório
+
+```bash
+git clone [https://github.com/tech-solutions/cadastro-pessoas.git](https://github.com/tech-solutions/cadastro-pessoas.git) # Substitua pela URL do seu repositório
+cd cadastro-pessoas
+```
+
+### 2. Configure o Banco de Dados (PostgreSQL com Docker)
+
+Para um ambiente de desenvolvimento limpo, recomendamos usar o Docker para rodar o banco de dados. O comando abaixo irá criar um container PostgreSQL pronto para uso.
+
+```bash
+docker run -it --rm \
+  --name devPostgresDb \
+  -p 5432:5432 \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=localdb \
+  -d postgres
+```
+
+### 3. Execute a Aplicação
+
+Primeiro, torne o script do Maven Wrapper executável (necessário apenas uma vez).
+
+```bash
+# Apenas para Linux/macOS
+chmod +x mvnw
+```
+
+Agora, compile o projeto e inicie o servidor Payara Micro.
+
+**No Linux/macOS:**
+```bash
 ./mvnw clean package payara-micro:start
+```
 
-#################################################
-
-Para nao executar testes, utilize: ./mvnw clean package -DskipTests=true
-
-############### No windos utilize ################
-
+**No Windows:**
+```bash
 mvnw.cmd clean package payara-micro:start
+```
 
-#################################################
+Após a inicialização, a API estará disponível em `http://localhost:8080`.
 
+---
 
-Talvez seja necessário configurar a variável JAVA_HOME. Para isso, verifique onde sua jdk está instalada e informe a variável utilizando o path resumido (dir /x). Exemplo:
+## Executando os Testes
 
-SET  JAVA_HOME="C:\Progra~1\Java\jdk-20"
+Para rodar a suíte de testes automatizados, execute o comando:
 
-Após iniciado, voce poderá acessar o projeto em http://localhost:8080.
+```bash
+# Linux/macOS
+./mvnw clean test
 
-===========  EM PRODUCAO ======
-Para executar em producao voce devera configurar as variaveis de ambiente: DATABASE_URL, DATABASE_USERNAME e DATABASE_PASSWORD
+# Windows
+mvnw.cmd clean test
+```
 
-Exemplos:
-DATABASE_URL="jdbc:postgresql://127.0.0.1:5432/localdb" 
-DATABASE_USERNAME="postgres" -
-DATABASE_PASSWORD="postgres"
+Caso deseje compilar o projeto sem rodar os testes, utilize a flag `-DskipTests=true`.
 
-Há duas maneiras de alocar em producao (1 executar arquivo.jar e 2 gerar container):
-1. Executar diretamente o payara-micro ou outro ee server compatível
+---
 
-%> java -jar <payara-micro> Cadastro-Pessoas.war
+## Como Executar o Projeto (Produção)
 
-O arquivo .war encontra-se dentro da pasta target.
+### Configurando Variáveis de Ambiente
 
-------------- -------- -------------- ------------- ------------- ------------- -------------
+Em produção, as credenciais do banco de dados devem ser fornecidas via variáveis de ambiente:
 
-2. Entregar o projeto via Docker. Para construir a imagem Docker, execute os seguintes comandos no diretório onde este arquivo reside:
+-   `DATABASE_URL`: A URL de conexão JDBC. Ex: `jdbc:postgresql://127.0.0.1:5432/customerdb`
+-   `DATABASE_USERNAME`: O nome de usuário do banco. Ex: `postgres`
+-   `DATABASE_PASSWORD`: A senha do banco. Ex: `sudodb`
 
-#################################################
+### Opção 1: Executando o artefato .war
 
-./mvnw clean package 
+Compile o projeto para gerar o arquivo `.war` na pasta `target/` e execute-o com o Payara Micro.
 
+```bash
+# 1. Compile o projeto
+./mvnw clean package -DskipTests=true
+
+# 2. Execute o .war (substitua <payara-micro.jar> pelo caminho do seu executável)
+java -jar <payara-micro.jar> target/Cadastro-Pessoas.war
+```
+
+### Opção 2: Executando com Docker
+
+Esta é a abordagem recomendada para produção.
+
+**1. Construa a imagem Docker:**
+O `Dockerfile` na raiz do projeto já está configurado. Execute o comando:
+
+```bash
+# Compila o projeto e constrói a imagem Docker
+./mvnw clean package
 docker build -t cadpessoas:v1 .
+```
 
-Para rodar a imagem e configurar as variaveis de ambiente, utilize o comando 
+**2. Rode o container da aplicação:**
+Execute o comando abaixo, substituindo os valores pelas suas configurações de produção.
 
-docker run -it --rm -e DATABASE_URL="jdbc:postgresql://<url do banco de dados>" -e DATABASE_USERNAME="<nome do usuario>" -e DATABASE_PASSWORD="<senha do usuario>" -p 8080:8080 cadpessoas:v1
-
-Exemplo de comando completo:
-docker run -it --rm -e DATABASE_URL="jdbc:postgresql://192.168.0.110:5432/localdb" -e DATABASE_USERNAME="postgres" -e DATABASE_PASSWORD="postgres" -p 8080:8080 cadpessoas:v1
-
-
-Assim que a execução começar, você poderá acessar o projeto em http://localhost:8080/Cadastro-Pessoas
-
-Exemplo de configuração para o bd em produção:
-docker run -it  --rm   --name ProductPostgresDb    -p 5432:5432     -e POSTGRES_USER=postgres     -e POSTGRES_PASSWORD=sudodb     -e POSTGRES_DB=customerdb   -e PGDATA=/var/lib/postgresql/data/pgdata -v C:/Users/UTFPR/Downloads/dados:/var/lib/postgresql/data -d postgres
+```bash
+docker run -it --rm \
+  -e DATABASE_URL="jdbc:postgresql://<url_do_banco_de_dados>" \
+  -e DATABASE_USERNAME="<nome_do_usuario>" \
+  -e DATABASE_PASSWORD="<senha_do_usuario>" \
+  -p 8080:8080 \
+  --name cadpessoas-app \
+  cadpessoas:v1
+```
+A aplicação estará disponível em `http://localhost:8080/Cadastro-Pessoas`.
