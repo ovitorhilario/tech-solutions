@@ -1,7 +1,6 @@
 # Cadastro de Pessoas API
 
 ![Versão](https://img.shields.io/badge/version-1.0.0-blue)
-![Status do Build](https://img.shields.io/github/actions/workflow/status/tech-solutions/cadastro-pessoas/main.yml?branch=main) ![Licença](https://img.shields.io/badge/license-MIT-green)
 
 API REST para gerenciamento de um cadastro de clientes (Pessoas e Cidades), desenvolvida com Jakarta EE e Payara Micro.
 
